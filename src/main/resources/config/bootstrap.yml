@@ -1,0 +1,49 @@
+server:
+  servlet:
+    context-path: /ams-opc
+  port: 8085
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: ams-opc
+  main:
+    allow-bean-definition-overriding: true
+
+dubbo:
+  application:
+    qos-enable: false
+  scan:
+    base-packages: com.eden.site.service
+  protocols:
+    dubbo:
+      name: dubbo
+      port: -1
+  registry:
+    # 挂载到springCloud 注册中心，无需修改
+    address: spring-cloud://localhost
+    check: false
+  cloud:
+    # 订阅的服务提供者列表
+    subscribed-services: ams-resource
+  consumer:
+    validation: true
+
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      config:
+        #server-addr: 127.0.0.1:8848
+        #namespace: 9beae486-9bf1-482c-9fbf-2ba89a257b6f
+        server-addr: 172.21.201.103:9000
+        namespace: 7d639527-9455-4dd0-9f70-4a79160ac1f3
+      discovery:
+        enabled: true
+        register-enabled: true
+        #server-addr: 127.0.0.1:8848
+        #namespace: 9beae486-9bf1-482c-9fbf-2ba89a257b6f
+        server-addr: 172.21.201.103:9000
+        namespace: 7d639527-9455-4dd0-9f70-4a79160ac1f3
